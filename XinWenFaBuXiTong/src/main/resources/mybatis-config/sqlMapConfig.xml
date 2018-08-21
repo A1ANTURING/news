@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="aggressiveLazyLoading" value="false" />
+	</settings>
+<!-- <package>标签表示实体类很多的情况下直接扫描实体类包下的所有实体类，并启用别名，在实体类上用注解，或者直接类名首字母小写 -->
+	<typeAliases>
+		<package name="com.ht.pojo" />
+	</typeAliases>
+</configuration>

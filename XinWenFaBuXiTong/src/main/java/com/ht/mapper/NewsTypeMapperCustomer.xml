@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ht.mapper.NewsTypeMapperCustomer">
+	<resultMap type="NewsType" id="baseResultMap">
+		<id column="newsTypeId" property="newstypeid" jdbcType="INTEGER" />
+		<result column="typeName" property="typename" jdbcType="VARCHAR" />
+		<collection ofType="News" property="news" column="newsTypeId" select="com.ht.mapper.NewsMapperCustomer.findByTypeId"></collection>
+	</resultMap>
+
+	<select id="findAllAndNews" resultMap="baseResultMap">
+		SELECT
+		*
+		FROM
+		t_newstype
+	</select>
+	
+	<select id="findAll" resultType="NewsType">
+		SELECT
+		*
+		FROM
+		t_newstype
+	</select>
+</mapper>

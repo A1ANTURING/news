@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ht.mapper.CommentMapperCustomer">
+	<resultMap type="Comment" id="baseResultMap">
+		<id column="commentId" property="commentid" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="userIP" property="userip" jdbcType="VARCHAR" />
+		<result column="commentTime" property="commenttime" jdbcType="TIMESTAMP" />
+		<result column="newsId" property="newsid" jdbcType="INTEGER" />
+		<association property="news" column="newsId"
+			select="com.ht.mapper.TNewsMapper.selectByPrimaryKey"
+			javaType="TNews"></association>
+	</resultMap>
+	<select id="findByNewsId" resultType="TComment" parameterType="int">
+		SELECT
+		*
+		FROM t_comment
+		WHERE newsId = #{value}
+	</select>
+
+	<insert id="doCreate" parameterType="TComment">
+		INSERT INTO t_comment
+		VALUES(NULL,#{content},#{userip},NOW(),#{newsid})
+	</insert>
+
+	<select id="findByPageAndDate" parameterType="com.ht.vo.NewsFindByTypeIdVo"
+		resultType="TComment">
+		SELECT
+		*
+		FROM t_comment
+		<where>
+			<if
+				test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+				commentTime BETWEEN #{startDate} AND #{endDate}
+			</if>
+		</where>
+		LIMIT #{startIndex},#{pageSize}
+	</select>
+
+	<select id="findCount" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM t_comment
+	</select>
+
+	<select id="findCommentByPageAndDate" parameterType="com.ht.vo.NewsFindByTypeIdVo"
+		resultMap="baseResultMap">
+		SELECT
+		*
+		FROM t_comment
+		<where>
+			<if
+				test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+				commentTime BETWEEN #{startDate} AND #{endDate}
+			</if>
+		</where>
+		LIMIT #{startIndex},#{pageSize}
+	</select>
+
+	<delete id="doDelete" parameterType="int">
+		DELETE
+		FROM t_comment
+		WHERE
+		commentId = #{value}
+	</delete>
+
+	<delete id="doDeleteByPiliang">
+		DELETE
+		FROM t_comment
+		WHERE commentId IN
+		<foreach collection="list" item="commentId" open="(" separator="," close=")">
+			#{commentId}
+		</foreach>
+	</delete>
+</mapper>

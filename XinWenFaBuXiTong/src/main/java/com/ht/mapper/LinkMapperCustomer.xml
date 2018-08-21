@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ht.mapper.LinkMapperCustomer">
+	<select id="findAllByOrderNumASC" resultType="TLink">
+		SELECT
+		*
+		FROM
+		t_link
+		ORDER BY orderNum ASC
+	</select>
+	
+	<select id="findByLinkId" parameterType="int" resultType="TLink">
+		SELECT
+		*
+		FROM
+		t_link
+		WHERE linkId = #{value}
+	</select>
+
+	<insert id="doCreate" parameterType="TLink">
+		INSERT
+		INTO t_link
+		VALUES
+		(NULL,#{linkname},#{linkurl},#{email},#{ordernum})
+	</insert>
+
+	<update id="doUpdate" parameterType="TLink">
+		UPDATE
+		t_link SET linkName =
+		#{linkname} , linkUrl = #{linkurl} ,email = #{email} ,
+		orderNum =
+		#{ordernum}
+		WHERE linkid = #{linkid}
+	</update>
+
+	<delete id="doDelete" parameterType="int">
+		DELETE FROM t_link
+		WHERE linkid = #{value}
+	</delete>
+</mapper>

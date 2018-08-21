@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ht.mapper.TNewsMapper" >
+  <resultMap id="BaseResultMap" type="com.ht.pojo.TNews" >
+    <id column="newsId" property="newsid" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="isHead" property="ishead" jdbcType="INTEGER" />
+    <result column="isImage" property="isimage" jdbcType="INTEGER" />
+    <result column="imageName" property="imagename" jdbcType="VARCHAR" />
+    <result column="isHot" property="ishot" jdbcType="INTEGER" />
+    <result column="releaseDate" property="releasedate" jdbcType="DATE" />
+    <result column="click" property="click" jdbcType="INTEGER" />
+    <result column="typeId" property="typeid" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ht.pojo.TNews" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    newsId, title, author, isHead, isImage, imageName, isHot, releaseDate, click, typeId
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.ht.pojo.TNewsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_news
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ht.pojo.TNewsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_news
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_news
+    where newsId = #{newsid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_news
+    where newsId = #{newsid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ht.pojo.TNewsExample" >
+    delete from t_news
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ht.pojo.TNews" >
+    insert into t_news (newsId, title, author, 
+      isHead, isImage, imageName, 
+      isHot, releaseDate, click, 
+      typeId, content)
+    values (#{newsid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{ishead,jdbcType=INTEGER}, #{isimage,jdbcType=INTEGER}, #{imagename,jdbcType=VARCHAR}, 
+      #{ishot,jdbcType=INTEGER}, #{releasedate,jdbcType=DATE}, #{click,jdbcType=INTEGER}, 
+      #{typeid,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ht.pojo.TNews" >
+    insert into t_news
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="newsid != null" >
+        newsId,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="ishead != null" >
+        isHead,
+      </if>
+      <if test="isimage != null" >
+        isImage,
+      </if>
+      <if test="imagename != null" >
+        imageName,
+      </if>
+      <if test="ishot != null" >
+        isHot,
+      </if>
+      <if test="releasedate != null" >
+        releaseDate,
+      </if>
+      <if test="click != null" >
+        click,
+      </if>
+      <if test="typeid != null" >
+        typeId,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="newsid != null" >
+        #{newsid,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="ishead != null" >
+        #{ishead,jdbcType=INTEGER},
+      </if>
+      <if test="isimage != null" >
+        #{isimage,jdbcType=INTEGER},
+      </if>
+      <if test="imagename != null" >
+        #{imagename,jdbcType=VARCHAR},
+      </if>
+      <if test="ishot != null" >
+        #{ishot,jdbcType=INTEGER},
+      </if>
+      <if test="releasedate != null" >
+        #{releasedate,jdbcType=DATE},
+      </if>
+      <if test="click != null" >
+        #{click,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null" >
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ht.pojo.TNewsExample" resultType="java.lang.Integer" >
+    select count(*) from t_news
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_news
+    <set >
+      <if test="record.newsid != null" >
+        newsId = #{record.newsid,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null" >
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ishead != null" >
+        isHead = #{record.ishead,jdbcType=INTEGER},
+      </if>
+      <if test="record.isimage != null" >
+        isImage = #{record.isimage,jdbcType=INTEGER},
+      </if>
+      <if test="record.imagename != null" >
+        imageName = #{record.imagename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ishot != null" >
+        isHot = #{record.ishot,jdbcType=INTEGER},
+      </if>
+      <if test="record.releasedate != null" >
+        releaseDate = #{record.releasedate,jdbcType=DATE},
+      </if>
+      <if test="record.click != null" >
+        click = #{record.click,jdbcType=INTEGER},
+      </if>
+      <if test="record.typeid != null" >
+        typeId = #{record.typeid,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update t_news
+    set newsId = #{record.newsid,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      isHead = #{record.ishead,jdbcType=INTEGER},
+      isImage = #{record.isimage,jdbcType=INTEGER},
+      imageName = #{record.imagename,jdbcType=VARCHAR},
+      isHot = #{record.ishot,jdbcType=INTEGER},
+      releaseDate = #{record.releasedate,jdbcType=DATE},
+      click = #{record.click,jdbcType=INTEGER},
+      typeId = #{record.typeid,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_news
+    set newsId = #{record.newsid,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      isHead = #{record.ishead,jdbcType=INTEGER},
+      isImage = #{record.isimage,jdbcType=INTEGER},
+      imageName = #{record.imagename,jdbcType=VARCHAR},
+      isHot = #{record.ishot,jdbcType=INTEGER},
+      releaseDate = #{record.releasedate,jdbcType=DATE},
+      click = #{record.click,jdbcType=INTEGER},
+      typeId = #{record.typeid,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ht.pojo.TNews" >
+    update t_news
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="ishead != null" >
+        isHead = #{ishead,jdbcType=INTEGER},
+      </if>
+      <if test="isimage != null" >
+        isImage = #{isimage,jdbcType=INTEGER},
+      </if>
+      <if test="imagename != null" >
+        imageName = #{imagename,jdbcType=VARCHAR},
+      </if>
+      <if test="ishot != null" >
+        isHot = #{ishot,jdbcType=INTEGER},
+      </if>
+      <if test="releasedate != null" >
+        releaseDate = #{releasedate,jdbcType=DATE},
+      </if>
+      <if test="click != null" >
+        click = #{click,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null" >
+        typeId = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where newsId = #{newsid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ht.pojo.TNews" >
+    update t_news
+    set title = #{title,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      isHead = #{ishead,jdbcType=INTEGER},
+      isImage = #{isimage,jdbcType=INTEGER},
+      imageName = #{imagename,jdbcType=VARCHAR},
+      isHot = #{ishot,jdbcType=INTEGER},
+      releaseDate = #{releasedate,jdbcType=DATE},
+      click = #{click,jdbcType=INTEGER},
+      typeId = #{typeid,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where newsId = #{newsid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ht.pojo.TNews" >
+    update t_news
+    set title = #{title,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      isHead = #{ishead,jdbcType=INTEGER},
+      isImage = #{isimage,jdbcType=INTEGER},
+      imageName = #{imagename,jdbcType=VARCHAR},
+      isHot = #{ishot,jdbcType=INTEGER},
+      releaseDate = #{releasedate,jdbcType=DATE},
+      click = #{click,jdbcType=INTEGER},
+      typeId = #{typeid,jdbcType=INTEGER}
+    where newsId = #{newsid,jdbcType=INTEGER}
+  </update>
+</mapper>
